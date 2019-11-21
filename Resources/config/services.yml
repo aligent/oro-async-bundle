@@ -1,0 +1,19 @@
+services:
+  Aligent\AsyncBundle\Async\AbstractRetryableProcessor:
+    class: Aligent\AsyncBundle\Async\AbstractRetryableProcessor
+    arguments:
+      - '@logger'
+      - '@doctrine'
+
+  Aligent\AsyncBundle\Datagrid\Extension\MassAction\Ajax\AjaxMassRetryJobsAction:
+    class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction
+    shared: false
+    public: true
+    tags:
+      - { name: oro_datagrid.extension.mass_action.type, type: retryjobs }
+
+  Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler:
+    class: Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
+    public: true
+    arguments:
+      - '@oro_message_queue.message_producer'

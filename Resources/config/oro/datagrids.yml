@@ -1,0 +1,76 @@
+datagrids:
+  aligent-failed-jobs-grid:
+    source:
+      type: orm
+      query:
+        select:
+          - job.topic
+          - job.exception
+          - job.id
+          - job.createdAt
+        from:
+          - { table: AligentAsyncBundle:FailedJob, alias: job }
+    columns:
+      topic:
+        label: aligent.async.failedjob.topic.label
+      exception:
+        label: aligent.async.failedjob.exception.label
+      createdAt:
+        frontend_type: datetime
+        label: aligent.async.failedjob.created_at.label
+    sorters:
+      columns:
+        createdAt:
+          type: datetime
+          data_name: job.createdAt
+        topic:
+          type: string
+          data_name: job.topic
+        exception:
+          type: string
+          data_name: job.exception
+    filters:
+      columns:
+        createdAt:
+          type: datetime
+          data_name: job.createdAt
+        topic:
+          type: string
+          data_name: job.topic
+        exception:
+          type: string
+          data_name: job.exception
+    properties:
+      id: ~
+      view_link:
+        type: url
+        route: aligent_failed_jobs_view
+        params: [ id ]
+      delete_link:
+        type: url
+        route: aligent_failed_jobs_delete
+        params: [ id ]
+      retry_link:
+        type: url
+        route: aligent_failed_jobs_retry
+        params: [ id ]
+    actions:
+      view:
+        type:         navigate
+        label:        oro.grid.action.view
+        link:         view_link
+        icon:         eye
+        acl_resource: failed_jobs
+        rowAction:    true
+      retry:
+        type:         ajax
+        label:        aligent.async.failedjob.retry.label
+        link:         retry_link
+        icon:         refresh
+        acl_resource: failed_jobs
+        confirmation: true
+      delete:
+        type:          delete
+        label:         oro.grid.action.delete
+        link:          delete_link
+        icon:          trash-o
