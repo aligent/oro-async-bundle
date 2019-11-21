@@ -1,0 +1,79 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+{% oro_title_set({
+    titleTemplate : "%title%",
+    params : {
+        "%title%": entity.topic,
+    }
+}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('aligent_failed_jobs_index'),
+        'indexLabel': 'aligent.async.failedjob.entity.plural_label'|trans,
+        'entityTitle': entity.topic
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    <div class="pull-right btn-group icons-holder">
+        {{ UI.ajaxButton({
+            'aCss':  'no-hash btn-primary',
+            'iCss':  'fa-refresh',
+            'label': 'aligent.async.failedjob.retry.label'|trans,
+            'title': 'aligent.async.failedjob.retry.label'|trans,
+            'dataId': entity.id,
+            'dataMethod': 'GET',
+            'dataUrl': path('aligent_failed_jobs_retry', {id: entity.id}),
+            'dataRedirect': path('aligent_failed_jobs_index'),
+            'successMessage': 'aligent.async.failedjob.retry_success.label'|trans
+        }) }}
+
+        {{ UI.ajaxButton({
+            'aCss':  'no-hash btn-danger',
+            'iCss':  'fa-close',
+            'label': 'aligent.async.failedjob.delete.label'|trans,
+            'title': 'aligent.async.failedjob.delete.label'|trans,
+            'dataId': entity.id,
+            'dataMethod': 'GET',
+            'dataUrl': path('aligent_failed_jobs_delete', {id: entity.id}),
+            'dataRedirect': path('aligent_failed_jobs_index'),
+            'successMessage': 'aligent.async.failedjob.delete_success.label'|trans
+        }) }}
+    </div>
+    {{ parent() }}
+{% endblock navButtons %}
+
+{% block content_data %}
+    {% set faildJobInformationWidget %}
+        <div class="responsive-cell">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ ui.renderProperty('aligent.async.failedjob.topic.label'|trans, entity.topic) }}
+                    {{ ui.renderProperty('aligent.async.failedjob.exception.label'|trans, entity.exception) }}
+                    {{ ui.renderCollapsibleHtmlProperty('aligent.async.failedjob.body.label'|trans, entity.body|json_encode, entity, 'body') }}
+                </div>
+            </div>
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ ui.renderCollapsibleHtmlProperty('aligent.async.failedjob.trace.label'|trans, entity.trace|nl2br, entity, 'trace') }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set generalSubBlocks = [{'data' : [faildJobInformationWidget]}] %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'subblocks': generalSubBlocks
+        }
+    ] %}
+
+    {% set id = 'failedJobsView' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

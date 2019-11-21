@@ -1,0 +1,20 @@
+operations:
+  job_retry:
+    label: aligent.async.failedjob.mass_retry.label
+    routes:
+      - aligent_failed_jobs_index
+    datagrids:
+      - aligent-failed-jobs-grid
+    datagrid_options:
+      mass_action:
+        type:              retryjobs
+        label:             aligent.async.failedjob.mass_retry.label
+        handler:           Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
+        acl_resource:      failed_jobs
+        icon:              refresh
+        data_identifier:   job.id
+        object_identifier: job
+        defaultMessages:
+          confirm_title: Please Confirm
+          confirm_content: Are you sure you want to requeue these jobs?
+          confirm_ok: Yes

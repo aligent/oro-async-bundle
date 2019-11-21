@@ -1,0 +1,12 @@
+navigation:
+  menu_config:
+    items:
+      aligent_async_failed_jobs:
+        label: aligent.async.failedjob.entity.plural_label
+        route: aligent_failed_jobs_index
+    tree:
+      application_menu:
+        children:
+          system_tab:
+            children:
+              aligent_async_failed_jobs: ~

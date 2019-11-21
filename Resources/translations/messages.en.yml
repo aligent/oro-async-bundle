@@ -1,0 +1,16 @@
+aligent.async.failedjob.entity.plural_label: Failed Jobs
+aligent.async.failedjob.retry.label: Retry
+aligent.async.failedjob.entity_plural_label: Failed Jobs
+aligent.async.failedjob.created_at.label: Created At
+aligent.async.failedjob.updated_at.label: Updated At
+aligent.async.failedjob.exception.label: Exception
+aligent.async.failedjob.topic.label: Topic
+aligent.async.failedjob.body.label: Body
+aligent.async.failedjob.mass_retry.label: Mass Retry
+aligent.async.failedjob.trace.label: Trace
+aligent.async.failedjob.retry_success.label: Job has been requeued
+aligent.async.failedjob.delete.label: Delete
+aligent.async.failedjob.delete_success.label: Delete
+aligent.async.failedjob.confirm.title: Please Confirm
+aligent.async.failedjob.confirm.content: Are you sure you want to requeue these jobs?
+aligent.async.failedjob.confirm_ok.label: OK

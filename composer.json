@@ -1,0 +1,22 @@
+{
+  "name": "aligent/async-bundle",
+  "license": "MIT",
+  "version": "3.1.0",
+  "type": "symfony-bundle",
+  "description": "A bundle for extending Oro's Async processing",
+  "authors": [
+    {
+      "name": "Aligent",
+      "homepage": "https://www.aligent.com.au"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Aligent\\AsyncBundle\\": ""
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "oro/platform": "3.*"
+  }
+}
