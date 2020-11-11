@@ -54,7 +54,7 @@ class FailedJob implements DatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="exception", type="string", nullable=true)
+     * @ORM\Column(name="exception", type="text", nullable=true)
      */
     protected $exception;
 
