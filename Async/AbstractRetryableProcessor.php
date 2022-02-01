@@ -21,7 +21,7 @@ use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 use Psr\Log\LoggerInterface;
 use Oro\Component\MessageQueue\Client\Config;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractRetryableProcessor implements MessageProcessorInterface, RetryableProcessorInterface
 {
@@ -34,16 +34,16 @@ abstract class AbstractRetryableProcessor implements MessageProcessorInterface, 
     protected $logger;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $registry;
 
     /**
      * AbstractRetryableProcessor constructor.
      * @param LoggerInterface $logger
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(LoggerInterface $logger, RegistryInterface $registry)
+    public function __construct(LoggerInterface $logger, ManagerRegistry $registry)
     {
         $this->logger = $logger;
         $this->registry = $registry;
@@ -93,7 +93,7 @@ abstract class AbstractRetryableProcessor implements MessageProcessorInterface, 
             $exception = $exception->getPrevious();
         }
 
-        $em = $this->registry->getEntityManager();
+        $em = $this->registry->getManager();
         $failedJob = new FailedJob(
             $message->getProperty(Config::PARAMETER_TOPIC_NAME),
             JSON::decode($message->getBody()),
