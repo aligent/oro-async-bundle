@@ -1,7 +1,6 @@
 {
   "name": "aligent/async-bundle",
   "license": "MIT",
-  "version": "4.2.0",
   "type": "symfony-bundle",
   "description": "A bundle for extending Oro's Async processing",
   "authors": [
