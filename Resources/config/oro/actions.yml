@@ -9,7 +9,7 @@ operations:
       mass_action:
         type:              retryjobs
         label:             aligent.async.failedjob.mass_retry.label
-        handler:           Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
+        handler:           Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
         acl_resource:      failed_jobs
         icon:              refresh
         data_identifier:   job.id

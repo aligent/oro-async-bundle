@@ -1,0 +1,13 @@
+services:
+  Aligent\AsyncEventsBundle\Integration\WebhookChannel:
+    class: Aligent\AsyncEventsBundle\Integration\WebhookChannel
+    tags:
+      - { name: oro_integration.channel, type: webhook }
+
+  Aligent\AsyncEventsBundle\Integration\WebhookTransport:
+    class: Aligent\AsyncEventsBundle\Integration\WebhookTransport
+    arguments:
+      - "@oro_security.encoder.default"
+      - '@logger'
+    tags:
+      - { name: oro_integration.transport, channel_type: webhook, type: webhook }

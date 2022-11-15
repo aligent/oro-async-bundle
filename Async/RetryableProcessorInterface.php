@@ -10,9 +10,9 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Async;
+namespace Aligent\AsyncEventsBundle\Async;
 
-use Aligent\AsyncBundle\Exception\RetryableException;
+use Aligent\AsyncEventsBundle\Exception\RetryableException;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 
 interface RetryableProcessorInterface

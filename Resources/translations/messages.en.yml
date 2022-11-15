@@ -1,3 +1,5 @@
+aligent.webhook.channel.label: Webhook
+aligent.webhook.webhooktransport.entity_label: Webhook Transport
 aligent.async.failedjob.entity.plural_label: Failed Jobs
 aligent.async.failedjob.retry.label: Retry
 aligent.async.failedjob.entity_plural_label: Failed Jobs
