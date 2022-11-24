@@ -18,7 +18,7 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 
 /**
  * Class FailedJob
- * @package Aligent\AsyncBundle\Entity
+ * @package Aligent\AsyncEventsBundle\Entity
  * @ORM\Entity()
  * @ORM\Table(
  *      name="aligent_failed_job",
