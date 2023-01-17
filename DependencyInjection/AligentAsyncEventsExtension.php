@@ -10,15 +10,16 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\DependencyInjection;
+namespace Aligent\AsyncEventsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class AligentAsyncExtension extends Extension
+class AligentAsyncEventsExtension extends Extension
 {
+
     /**
      * Loads a specific configuration.
      *
@@ -30,5 +31,6 @@ class AligentAsyncExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('integration.yml');
     }
 }

@@ -10,10 +10,9 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Datagrid\Extension\MassAction;
+namespace Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction;
 
-
-use Aligent\AsyncBundle\Entity\FailedJob;
+use Aligent\AsyncEventsBundle\Entity\FailedJob;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;

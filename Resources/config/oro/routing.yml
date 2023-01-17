@@ -1,4 +1,4 @@
 aligent_failed_jobs:
-  resource: '@AligentAsyncBundle/Controller/FailedJobController.php'
+  resource: '@AligentAsyncEventsBundle/Controller/FailedJobController.php'
   type: annotation
   prefix: /failedJobs

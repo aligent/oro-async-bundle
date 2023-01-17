@@ -10,7 +10,7 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Entity;
+namespace Aligent\AsyncEventsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
@@ -18,7 +18,7 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 
 /**
  * Class FailedJob
- * @package Aligent\AsyncBundle\Entity
+ * @package Aligent\AsyncEventsBundle\Entity
  * @ORM\Entity()
  * @ORM\Table(
  *      name="aligent_failed_job",
@@ -75,8 +75,7 @@ class FailedJob implements DatesAwareInterface
         $topic,
         array $body,
         \Exception $exception = null
-    )
-    {
+    ) {
         $this->topic = $topic;
         $this->body = $body;
 

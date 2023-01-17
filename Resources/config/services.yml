@@ -1,19 +1,72 @@
 services:
-  Aligent\AsyncBundle\Async\AbstractRetryableProcessor:
-    class: Aligent\AsyncBundle\Async\AbstractRetryableProcessor
+  Aligent\AsyncEventsBundle\Provider\WebhookIntegrationProvider:
+    class: Aligent\AsyncEventsBundle\Provider\WebhookIntegrationProvider
+    public: true
+    arguments:
+      - '@doctrine'
+      - '@Aligent\AsyncEventsBundle\Integration\WebhookTransport'
+
+  # Custom Form Types
+  Aligent\AsyncEventsBundle\Form\Type\WebhookTransportSettingsType:
+    arguments:
+      - '@doctrine'
+    tags:
+      - { name: form.type }
+
+  # Caches
+  aligent_webhook.config.cache:
+    public: false
+    parent: oro.cache.abstract
+    calls:
+      - [setNamespace, ['aligent_webhook']]
+
+  # Providers
+  Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider:
+    arguments:
+      - '@doctrine'
+      - '@aligent_webhook.config.cache'
+
+  # Event Listeners
+  Aligent\AsyncEventsBundle\EventListener\EntityEventListener:
+    lazy: true
+    arguments:
+      - '@Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider'
+      - '@oro_message_queue.client.message_producer'
+      - '@logger'
+    tags:
+      - { name: doctrine.event_listener, event: onFlush }
+      - { name: doctrine.event_listener, event: postFlush }
+
+  Aligent\AsyncEventsBundle\EventListener\WebhookConfigCacheEventListener:
+    arguments:
+      - '@aligent_webhook.config.cache'
+    tags:
+      - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Transport', event: postUpdate }
+
+  Aligent\AsyncEventsBundle\Async\WebhookEntityProcessor:
+    parent: Aligent\AsyncEventsBundle\Async\AbstractRetryableProcessor
+    calls:
+      - [setConfigProvider, ['@Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider']]
+      - [setTransport, ['@Aligent\AsyncEventsBundle\Integration\WebhookTransport']]
+      - [setSerializer, ['@oro_importexport.serializer']]
+    tags:
+      - { name: 'oro_message_queue.client.message_processor' }
+
+  Aligent\AsyncEventsBundle\Async\AbstractRetryableProcessor:
+    class: Aligent\AsyncEventsBundle\Async\AbstractRetryableProcessor
     arguments:
       - '@logger'
       - '@doctrine'
 
-  Aligent\AsyncBundle\Datagrid\Extension\MassAction\Ajax\AjaxMassRetryJobsAction:
+  Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction\Ajax\AjaxMassRetryJobsAction:
     class: Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction
     shared: false
     public: true
     tags:
       - { name: oro_datagrid.extension.mass_action.type, type: retryjobs }
 
-  Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler:
-    class: Aligent\AsyncBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
+  Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction\MassRetryActionHandler:
+    class: Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction\MassRetryActionHandler
     public: true
     arguments:
       - '@oro_message_queue.message_producer'

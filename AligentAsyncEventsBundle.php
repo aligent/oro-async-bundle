@@ -10,11 +10,11 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle;
+namespace Aligent\AsyncEventsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AligentAsyncBundle extends Bundle
+class AligentAsyncEventsBundle extends Bundle
 {
 
 }

@@ -11,10 +11,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "Aligent\\AsyncBundle\\": ""
+      "Aligent\\AsyncEventsBundle\\": ""
     }
   },
   "require": {
-    "php": "~7.4.14 || ~8.0.0" 
+    "oro/commerce": "5.0.*"
   }
 }

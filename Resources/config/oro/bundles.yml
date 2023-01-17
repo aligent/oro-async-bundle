@@ -1,2 +1,2 @@
 bundles:
-  - { name: Aligent\AsyncBundle\AligentAsyncBundle, priority: 50 }
+  - { name: Aligent\AsyncEventsBundle\AligentAsyncEventsBundle, priority: 50 }

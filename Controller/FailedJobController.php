@@ -10,19 +10,19 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Controller;
+namespace Aligent\AsyncEventsBundle\Controller;
 
-use Aligent\AsyncBundle\Entity\FailedJob;
+use Aligent\AsyncEventsBundle\Entity\FailedJob;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class FailedJobController extends Controller
+class FailedJobController extends AbstractController
 {
     /**
      * @Route(name="aligent_failed_jobs_index")
@@ -71,7 +71,6 @@ class FailedJobController extends Controller
             $em->flush();
         } catch (Exception $exception) {
             return new JsonResponse(['successful' => false]);
-
         }
 
         return new JsonResponse(['successful' => true]);
@@ -102,7 +101,6 @@ class FailedJobController extends Controller
             $em->flush();
         } catch (Exception $exception) {
             return new JsonResponse(['successful' => false]);
-
         }
 
         return new JsonResponse(['successful' => true]);

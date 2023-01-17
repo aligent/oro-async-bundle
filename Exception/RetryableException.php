@@ -10,8 +10,7 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Exception;
-
+namespace Aligent\AsyncEventsBundle\Exception;
 
 class RetryableException extends \Exception
 {

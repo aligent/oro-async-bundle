@@ -10,10 +10,10 @@
  * @link      http://www.aligent.com.au/
  */
 
-namespace Aligent\AsyncBundle\Async;
+namespace Aligent\AsyncEventsBundle\Async;
 
-use Aligent\AsyncBundle\Entity\FailedJob;
-use Aligent\AsyncBundle\Exception\RetryableException;
+use Aligent\AsyncEventsBundle\Entity\FailedJob;
+use Aligent\AsyncEventsBundle\Exception\RetryableException;
 use Doctrine\ORM\ORMException;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -63,7 +63,7 @@ abstract class AbstractRetryableProcessor implements MessageProcessorInterface, 
             $this->logger->error(
                 $e->getMessage(),
                 [
-                    'processor' => $message->getProperty(Config::PARAMETER_PROCESSOR_NAME),
+                    'topic' => $message->getProperty(Config::PARAMETER_TOPIC_NAME),
                     'headers'   => $message->getHeaders(),
                 ]
             );
