@@ -92,6 +92,7 @@ class WebhookTransport implements TransportInterface
     {
         return $this->client->request(
             $method,
+            '',
             [
                 'json' => $payload
             ]
