@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        public: true
+
+    # Controller
+    Aligent\AsyncEventsBundle\Controller\FailedJobController:
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@doctrine'
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

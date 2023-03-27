@@ -1,5 +1,5 @@
-{% extends '@OroUIBundle/actions:view.html.twig' %}
-{% import '@OroUIBundle/macros.html.twig' as ui %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
 {% oro_title_set({
     titleTemplate : "%title%",
     params : {
@@ -51,14 +51,14 @@
         <div class="responsive-cell">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ ui.renderProperty('aligent.async.failedjob.topic.label'|trans, entity.topic) }}
-                    {{ ui.renderProperty('aligent.async.failedjob.exception.label'|trans, entity.exception) }}
-                    {{ ui.renderCollapsibleHtmlProperty('aligent.async.failedjob.body.label'|trans, entity.body|json_encode, entity, 'body') }}
+                    {{ UI.renderProperty('aligent.async.failedjob.topic.label'|trans, entity.topic) }}
+                    {{ UI.renderProperty('aligent.async.failedjob.exception.label'|trans, entity.exception) }}
+                    {{ UI.renderCollapsibleHtmlProperty('aligent.async.failedjob.body.label'|trans, entity.body|json_encode, entity, 'body') }}
                 </div>
             </div>
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ ui.renderCollapsibleHtmlProperty('aligent.async.failedjob.trace.label'|trans, entity.trace|nl2br, entity, 'trace') }}
+                    {{ UI.renderCollapsibleHtmlProperty('aligent.async.failedjob.trace.label'|trans, entity.trace|nl2br, entity, 'trace') }}
                 </div>
             </div>
         </div>
