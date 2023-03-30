@@ -13,6 +13,7 @@
 namespace Aligent\AsyncEventsBundle\Controller;
 
 use Aligent\AsyncEventsBundle\Entity\FailedJob;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
@@ -24,6 +25,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class FailedJobController extends AbstractController
 {
+
+    protected MessageProducerInterface $messageProducer;
+    protected ManagerRegistry $doctrine;
+
+    /**
+     * @param MessageProducerInterface $messageProducer
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(MessageProducerInterface $messageProducer, ManagerRegistry $managerRegistry)
+    {
+        $this->messageProducer = $messageProducer;
+        $this->doctrine = $managerRegistry;
+    }
+
     /**
      * @Route(name="aligent_failed_jobs_index")
      * @Acl(
@@ -64,9 +79,8 @@ class FailedJobController extends AbstractController
      */
     public function deleteAction(FailedJob $job)
     {
-        $em = $this->getDoctrine()->getManager();
-
         try {
+            $em = $this->doctrine->getManager();
             $em->remove($job);
             $em->flush();
         } catch (Exception $exception) {
@@ -86,17 +100,13 @@ class FailedJobController extends AbstractController
      */
     public function retryAction(FailedJob $job)
     {
-        /** @var MessageProducerInterface $messageProducer */
-        $messageProducer = $this->get('oro_message_queue.message_producer');
-
-        $em = $this->getDoctrine()->getManager();
-
         try {
-            $messageProducer->send(
+            $this->messageProducer->send(
                 $job->getTopic(),
                 $job->getBody()
             );
 
+            $em = $this->doctrine->getManager();
             $em->remove($job);
             $em->flush();
         } catch (Exception $exception) {
