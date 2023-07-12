@@ -51,9 +51,10 @@ class WebhookTransportSettingsType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array<string, mixed> $options
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -127,9 +128,9 @@ class WebhookTransportSettingsType extends AbstractType
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getEntityList()
+    protected function getEntityList(): array
     {
         $em = $this->registry->getManager();
         $entities = [];
@@ -143,9 +144,9 @@ class WebhookTransportSettingsType extends AbstractType
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getEventsList()
+    protected function getEventsList(): array
     {
         /** @var array<string, string> $events */
         $events = [];
@@ -162,8 +163,9 @@ class WebhookTransportSettingsType extends AbstractType
     }
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', WebhookTransport::class);
     }

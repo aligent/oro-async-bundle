@@ -19,15 +19,8 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class WebhookIntegrationProvider
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var WebhookTransport
-     */
-    protected $transport;
+    protected ManagerRegistry $registry;
+    protected WebhookTransport $transport;
 
     /**
      * WebhookIntegrationProvider constructor.

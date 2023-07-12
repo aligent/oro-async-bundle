@@ -32,20 +32,9 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
         Topics::WEBHOOK_ENTITY_CUSTOM => WebhookConfigProvider::CUSTOM,
     ];
 
-    /**
-     * @var WebhookConfigProvider
-     */
-    protected $configProvider;
-
-    /**
-     * @var WebhookTransport
-     */
-    protected $transport;
-
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
+    protected WebhookTransport $transport;
+    protected SerializerInterface $serializer;
+    protected WebhookConfigProvider $configProvider;
 
     /**
      * @param SerializerInterface $serializer
@@ -83,7 +72,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     /**
      * @inheritDoc
      */
-    public function execute(MessageInterface $message)
+    public function execute(MessageInterface $message): string
     {
         $data = JSON::decode($message->getBody());
         $topic = $message->getProperty(Config::PARAMETER_TOPIC_NAME);
@@ -136,7 +125,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     /**
      * @inheritDoc
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedTopics(): array
     {
         return [
             Topics::WEBHOOK_ENTITY_CREATE,
@@ -149,10 +138,10 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     /**
      * @param string $event
      * @param array $data
-     * @return array
+     * @return array<string, mixed>
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    protected function buildPayload(string $event, array $data)
+    protected function buildPayload(string $event, array $data): array
     {
         $entity = $this->registry->getRepository($data['class'])->find($data['id']);
 

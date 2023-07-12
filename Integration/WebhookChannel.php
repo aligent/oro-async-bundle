@@ -19,7 +19,7 @@ class WebhookChannel implements ChannelInterface
     /**
      * @inheritDoc
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'aligent.async.channel.label';
     }

@@ -4,6 +4,7 @@ namespace Aligent\AsyncEventsBundle\Provider;
 
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 /**
@@ -25,15 +26,8 @@ class WebhookConfigProvider
     // Cache Keys
     const CONFIG_CACHE_KEY = 'WebhookConfig';
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var CacheProvider
-     */
-    protected $cache;
+    protected CacheProvider $cache;
+    protected ManagerRegistry $registry;
 
     /**
      * WebhookEntityProvider constructor.
@@ -48,8 +42,9 @@ class WebhookConfigProvider
 
     /**
      * Initialize the webhook config cache
+     * @return array<string, array<string, array<int>>>
      */
-    protected function getWebhookConfig()
+    protected function getWebhookConfig(): array
     {
         if ($webhookConfig = $this->cache->fetch(self::CONFIG_CACHE_KEY)) {
             return $webhookConfig;
@@ -76,20 +71,20 @@ class WebhookConfigProvider
 
     /**
      * @param $class
-     * @return array|null
+     * @return array<string, array<int>>|null
      */
-    public function getEntityConfig($class)
+    public function getEntityConfig($class): ?array
     {
         $config = $this->getWebhookConfig();
         return $config[$class] ?? null;
     }
 
     /**
-     * @param $class
-     * @param $event
+     * @param string $class
+     * @param string $event
      * @return boolean
      */
-    public function isManaged($class, $event)
+    public function isManaged(string $class, string $event): bool
     {
         $entityConfig = $this->getEntityConfig($class);
         if (!$entityConfig) {
@@ -101,11 +96,11 @@ class WebhookConfigProvider
 
     /**
      * Returns a list of channel id's that wish to be notified of this event for this entity
-     * @param $class
-     * @param $event
+     * @param string $class
+     * @param string $event
      * @return int[]
      */
-    public function getNotificationChannels($class, $event)
+    public function getNotificationChannels(string $class, string $event): array
     {
         $entityConfig = $this->getEntityConfig($class);
         if ($entityConfig == null) {
@@ -116,10 +111,10 @@ class WebhookConfigProvider
 
     /**
      * Convert the webhook config to an easily queried format
-     * @param array $config
-     * @return array
+     * @param array<int, Transport> $config
+     * @return array<string, array<string, array<int>>>
      */
-    protected function normalizeConfig(array $config)
+    protected function normalizeConfig(array $config): array
     {
         $normalizedConfig = [];
         foreach ($config as $id => $webhookTransport) {
