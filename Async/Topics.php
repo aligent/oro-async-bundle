@@ -18,6 +18,7 @@ class Topics
     const WEBHOOK_ENTITY_CREATE = 'aligent.webhook.entity.create';
     const WEBHOOK_ENTITY_UPDATE = 'aligent.webhook.entity.update';
     const WEBHOOK_ENTITY_DELETE = 'aligent.webhook.entity.delete';
+    const WEBHOOK_ENTITY_CUSTOM = 'aligent.webhook.entity.custom';
 
     const EVENT_MAP = [
         WebhookConfigProvider::UPDATE => self::WEBHOOK_ENTITY_UPDATE,

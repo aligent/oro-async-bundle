@@ -20,6 +20,7 @@ class WebhookConfigProvider
     const CREATE = 'create';
     const UPDATE = 'update';
     const DELETE = 'delete';
+    const CUSTOM = 'custom';
 
     // Cache Keys
     const CONFIG_CACHE_KEY = 'WebhookConfig';
@@ -107,6 +108,9 @@ class WebhookConfigProvider
     public function getNotificationChannels($class, $event)
     {
         $entityConfig = $this->getEntityConfig($class);
+        if ($entityConfig == null) {
+            return [];
+        }
         return $entityConfig[$event];
     }
 

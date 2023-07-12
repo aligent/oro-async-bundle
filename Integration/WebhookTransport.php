@@ -104,7 +104,7 @@ class WebhookTransport implements TransportInterface
      */
     public function getLabel()
     {
-        return 'aligent.webhook.transport.label';
+        return 'aligent.async.transport.label';
     }
 
     /**

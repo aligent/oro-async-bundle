@@ -29,6 +29,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
         Topics::WEBHOOK_ENTITY_UPDATE => WebhookConfigProvider::UPDATE,
         Topics::WEBHOOK_ENTITY_DELETE => WebhookConfigProvider::DELETE,
         Topics::WEBHOOK_ENTITY_CREATE => WebhookConfigProvider::CREATE,
+        Topics::WEBHOOK_ENTITY_CUSTOM => WebhookConfigProvider::CUSTOM,
     ];
 
     /**
@@ -119,6 +120,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             $this->logger->error(
                 $message,
                 [
+                    
                     'channelId' => $channel->getId(),
                     'channel' => $channel->getName(),
                     'topic' => $topic,
@@ -140,6 +142,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             Topics::WEBHOOK_ENTITY_CREATE,
             Topics::WEBHOOK_ENTITY_DELETE,
             Topics::WEBHOOK_ENTITY_UPDATE,
+            Topics::WEBHOOK_ENTITY_CUSTOM,
         ];
     }
 
@@ -153,7 +156,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     {
         $entity = $this->registry->getRepository($data['class'])->find($data['id']);
 
-        if ($event === WebhookConfigProvider::CREATE) {
+        if (in_array($event, [WebhookConfigProvider::CREATE, WebhookConfigProvider::CUSTOM])) {
             $changeSet = [];
         } else {
             // extract all of the before values from the change set

@@ -21,6 +21,6 @@ class WebhookChannel implements ChannelInterface
      */
     public function getLabel()
     {
-        return 'aligent.webhook.channel.label';
+        return 'aligent.async.channel.label';
     }
 }
