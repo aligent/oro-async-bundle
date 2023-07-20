@@ -1,5 +1,8 @@
-aligent.webhook.channel.label: Webhook
-aligent.webhook.webhooktransport.entity_label: Webhook Transport
+aligent.async.channel.label: Webhook
+aligent.async.transport.label: Webhook Transport
+aligent.async.transport.form.event.create: Create
+aligent.async.transport.form.event.update: Update
+aligent.async.transport.form.event.delete: Delete
 aligent.asyncevents.failedjob.entity_plural_label: Failed Jobs
 aligent.async.failedjob.entity.plural_label: Failed Jobs
 aligent.async.failedjob.retry.label: Retry

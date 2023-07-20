@@ -14,33 +14,20 @@ namespace Aligent\AsyncEventsBundle\Integration;
 
 use Aligent\AsyncEventsBundle\Form\Type\WebhookTransportSettingsType;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class WebhookTransport implements TransportInterface
 {
-    /**
-     * @var SymmetricCrypterInterface
-     */
-    protected $encoder;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @var Channel
-     */
-    protected $channel;
-
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
+    protected Channel $channel;
+    protected LoggerInterface $logger;
+    protected SymmetricCrypterInterface $encoder;
 
     /**
      * AntavoRestTransport constructor.
@@ -56,7 +43,7 @@ class WebhookTransport implements TransportInterface
     /**
      * @inheritDoc
      */
-    public function init(Transport $transportEntity)
+    public function init(Transport $transportEntity): void
     {
         $settings = $transportEntity->getSettingsBag();
         $this->channel = $transportEntity->getChannel();
@@ -84,11 +71,11 @@ class WebhookTransport implements TransportInterface
 
     /**
      * @param string $method
-     * @param array $payload
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @param array<string, mixed> $payload
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
-    public function sendWebhookEvent($method = 'POST', $payload = [])
+    public function sendWebhookEvent(string $method = 'POST', array $payload = []): ResponseInterface
     {
         return $this->client->request(
             $method,
@@ -102,15 +89,15 @@ class WebhookTransport implements TransportInterface
     /**
      * @inheritDoc
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        return 'aligent.webhook.transport.label';
+        return 'aligent.async.transport.label';
     }
 
     /**
      * @inheritDoc
      */
-    public function getSettingsFormType()
+    public function getSettingsFormType(): string
     {
         return WebhookTransportSettingsType::class;
     }
@@ -118,7 +105,7 @@ class WebhookTransport implements TransportInterface
     /**
      * @inheritDoc
      */
-    public function getSettingsEntityFQCN()
+    public function getSettingsEntityFQCN(): string
     {
         return \Aligent\AsyncEventsBundle\Entity\WebhookTransport::class;
     }

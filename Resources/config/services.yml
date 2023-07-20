@@ -10,8 +10,14 @@ services:
   Aligent\AsyncEventsBundle\Form\Type\WebhookTransportSettingsType:
     arguments:
       - '@doctrine'
+      - '@translator'
+      - '@Aligent\AsyncEventsBundle\Provider\WebhookCustomEventsProvider'
     tags:
       - { name: form.type }
+
+  Aligent\AsyncEventsBundle\Provider\WebhookCustomEventsProvider:
+    arguments:
+      - !tagged_iterator aligent_async_events.custom_events
 
   # Caches
   aligent_webhook.config.cache:

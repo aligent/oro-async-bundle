@@ -14,6 +14,7 @@ namespace Aligent\AsyncEventsBundle\Form\Type;
 
 use Aligent\AsyncEventsBundle\Entity\WebhookTransport;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
+use Aligent\AsyncEventsBundle\Provider\WebhookCustomEventsProviderInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
@@ -25,28 +26,35 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WebhookTransportSettingsType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
+    protected TranslatorInterface $translator;
+    protected WebhookCustomEventsProviderInterface $customEventsProvider;
 
     /**
-     * WebhookTransportSettingsType constructor.
      * @param ManagerRegistry $registry
+     * @param TranslatorInterface $translator
+     * @param WebhookCustomEventsProviderInterface $customEventsProvider
      */
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        TranslatorInterface $translator,
+        WebhookCustomEventsProviderInterface $customEventsProvider
+    ) {
         $this->registry = $registry;
+        $this->translator = $translator;
+        $this->customEventsProvider = $customEventsProvider;
     }
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array<string, mixed> $options
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -83,7 +91,10 @@ class WebhookTransportSettingsType extends AbstractType
                 OroChoiceType::class,
                 [
                     'required' => true,
-                    'choices' => $this->getEventsList()
+                    'choices' => $this->getEventsList(),
+                    'choice_label' => function ($choice, $key) {
+                        return $this->translator->trans($key);
+                    }
                 ]
             )
             ->add(
@@ -117,9 +128,9 @@ class WebhookTransportSettingsType extends AbstractType
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getEntityList()
+    protected function getEntityList(): array
     {
         $em = $this->registry->getManager();
         $entities = [];
@@ -133,21 +144,28 @@ class WebhookTransportSettingsType extends AbstractType
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getEventsList()
+    protected function getEventsList(): array
     {
+        /** @var array<string, string> $events */
         $events = [];
-        $events[WebhookConfigProvider::CREATE] = WebhookConfigProvider::CREATE;
-        $events[WebhookConfigProvider::UPDATE] = WebhookConfigProvider::UPDATE;
-        $events[WebhookConfigProvider::DELETE] = WebhookConfigProvider::DELETE;
+        // [ translation for the event's name  =>  event key (event key is saved in the db and is 16 char long ]
+        $events['aligent.async.transport.form.event.create'] = WebhookConfigProvider::CREATE;
+        $events['aligent.async.transport.form.event.update'] = WebhookConfigProvider::UPDATE;
+        $events['aligent.async.transport.form.event.delete'] = WebhookConfigProvider::DELETE;
+
+        foreach ($this->customEventsProvider->getCustomEvents() as $customEvent) {
+            $events[$customEvent->getTranslationName()] = $customEvent->getKey();
+        }
 
         return $events;
     }
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', WebhookTransport::class);
     }
