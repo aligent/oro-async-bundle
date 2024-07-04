@@ -10,7 +10,6 @@ namespace Aligent\AsyncEventsBundle\Provider;
 
 interface WebhookCustomEventInterface
 {
-
     /**
      * @return string
      */

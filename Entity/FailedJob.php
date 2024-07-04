@@ -19,50 +19,43 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 /**
  * Class FailedJob
  * @package Aligent\AsyncEventsBundle\Entity
- * @ORM\Entity()
- * @ORM\Table(
- *      name="aligent_failed_job",
- * )
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'aligent_failed_job')]
 class FailedJob implements DatesAwareInterface
 {
     use DatesAwareTrait;
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="topic", type="string")
      */
+    #[ORM\Column(name: 'topic', type: 'string')]
     protected $topic;
 
     /**
      * @var array
-     *
-     * @ORM\Column(name="body", type="json_array")
      */
+    #[ORM\Column(name: 'body', type: 'json_array')]
     protected $body;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="exception", type="text", nullable=true)
      */
+    #[ORM\Column(name: 'exception', type: 'text', nullable: true)]
     protected $exception;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="trace", type="text", nullable=true)
      */
+    #[ORM\Column(name: 'trace', type: 'text', nullable: true)]
     protected $trace;
 
     /**

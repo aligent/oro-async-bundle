@@ -15,12 +15,12 @@ namespace Aligent\AsyncEventsBundle\Async;
 use Aligent\AsyncEventsBundle\Entity\FailedJob;
 use Aligent\AsyncEventsBundle\Exception\RetryableException;
 use Doctrine\ORM\ORMException;
+use Oro\Component\MessageQueue\Client\Config;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 use Psr\Log\LoggerInterface;
-use Oro\Component\MessageQueue\Client\Config;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractRetryableProcessor implements MessageProcessorInterface, RetryableProcessorInterface
@@ -113,5 +113,5 @@ abstract class AbstractRetryableProcessor implements MessageProcessorInterface, 
      * @return string
      * @throws RetryableException
      */
-    abstract public function execute(MessageInterface $message);
+    abstract public function execute(MessageInterface $message): string;
 }

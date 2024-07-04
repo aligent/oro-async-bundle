@@ -2,11 +2,16 @@
 
 namespace Aligent\AsyncEventsBundle\Async;
 
-use Aligent\AsyncEventsBundle\Exception\RetryableException;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCreateTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCustomTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityDeleteTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityUpdateTopic;
 use Aligent\AsyncEventsBundle\Entity\WebhookTransport as WebhookTransportEntity;
+use Aligent\AsyncEventsBundle\Exception\RetryableException;
 use Aligent\AsyncEventsBundle\Integration\WebhookTransport;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
 use GuzzleHttp\Exception\GuzzleException;
+use Oro\Bundle\EntityExtendBundle\EntityReflectionClass;
 use Oro\Bundle\ImportExportBundle\Serializer\SerializerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Component\MessageQueue\Client\Config;
@@ -26,10 +31,10 @@ use Oro\Component\MessageQueue\Util\JSON;
 class WebhookEntityProcessor extends AbstractRetryableProcessor implements TopicSubscriberInterface
 {
     const EVENT_MAP = [
-        Topics::WEBHOOK_ENTITY_UPDATE => WebhookConfigProvider::UPDATE,
-        Topics::WEBHOOK_ENTITY_DELETE => WebhookConfigProvider::DELETE,
-        Topics::WEBHOOK_ENTITY_CREATE => WebhookConfigProvider::CREATE,
-        Topics::WEBHOOK_ENTITY_CUSTOM => WebhookConfigProvider::CUSTOM,
+        WebhookEntityUpdateTopic::NAME => WebhookConfigProvider::UPDATE,
+        WebhookEntityDeleteTopic::NAME => WebhookConfigProvider::DELETE,
+        WebhookEntityCreateTopic::NAME => WebhookConfigProvider::CREATE,
+        WebhookEntityCustomTopic::NAME => WebhookConfigProvider::CUSTOM,
     ];
 
     protected WebhookTransport $transport;
@@ -109,7 +114,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             $this->logger->error(
                 $message,
                 [
-                    
+
                     'channelId' => $channel->getId(),
                     'channel' => $channel->getName(),
                     'topic' => $topic,
@@ -128,10 +133,10 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     public static function getSubscribedTopics(): array
     {
         return [
-            Topics::WEBHOOK_ENTITY_CREATE,
-            Topics::WEBHOOK_ENTITY_DELETE,
-            Topics::WEBHOOK_ENTITY_UPDATE,
-            Topics::WEBHOOK_ENTITY_CUSTOM,
+            WebhookEntityCreateTopic::getName(),
+            WebhookEntityDeleteTopic::getName(),
+            WebhookEntityUpdateTopic::getName(),
+            WebhookEntityCustomTopic::getName(),
         ];
     }
 
@@ -155,7 +160,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             }
         }
 
-        $reflClass = new \ReflectionClass($data['class']);
+        $reflClass = new EntityReflectionClass($data['class']);
 
         return [
             'type' => $reflClass->getShortName(),

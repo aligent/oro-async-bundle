@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class WebhookHeaderType extends AbstractType
 {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
