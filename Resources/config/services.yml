@@ -22,9 +22,9 @@ services:
   # Caches
   aligent_webhook.config.cache:
     public: false
-    parent: oro.cache.abstract
-    calls:
-      - [setNamespace, ['aligent_webhook']]
+    parent: oro.data.cache
+    tags:
+      - { name: 'cache.pool', namespace: 'aligent_webhook' }
 
   # Providers
   Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider:
@@ -76,3 +76,19 @@ services:
     public: true
     arguments:
       - '@oro_message_queue.message_producer'
+
+  Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCreateTopic:
+    tags:
+      - { name: oro_message_queue.topic }
+
+  Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCustomTopic:
+    tags:
+      - { name: oro_message_queue.topic }
+
+  Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityDeleteTopic:
+    tags:
+      - { name: oro_message_queue.topic }
+
+  Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityUpdateTopic:
+    tags:
+      - { name: oro_message_queue.topic }

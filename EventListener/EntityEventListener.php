@@ -2,7 +2,9 @@
 
 namespace Aligent\AsyncEventsBundle\EventListener;
 
-use Aligent\AsyncEventsBundle\Async\Topics;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCreateTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityDeleteTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityUpdateTopic;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
@@ -27,6 +29,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EntityEventListener implements EventSubscriberInterface, OptionalListenerInterface
 {
+    const EVENT_MAP = [
+        WebhookConfigProvider::UPDATE => WebhookEntityUpdateTopic::NAME,
+        WebhookConfigProvider::DELETE => WebhookEntityDeleteTopic::NAME,
+        WebhookConfigProvider::CREATE => WebhookEntityCreateTopic::NAME,
+    ];
+
     /**
      * @var WebhookConfigProvider
      */
@@ -224,7 +232,7 @@ class EntityEventListener implements EventSubscriberInterface, OptionalListenerI
             // queue a job for every channel so they can be retried individually
             foreach ($channelIds as $channelId) {
                 $this->producer->send(
-                    Topics::EVENT_MAP[$event],
+                    self::EVENT_MAP[$event],
                     new Message(
                         [
                             'changeSet' => $changeSet,
@@ -242,7 +250,7 @@ class EntityEventListener implements EventSubscriberInterface, OptionalListenerI
     /**
      * @inheritDoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'onFlush',

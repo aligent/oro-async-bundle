@@ -8,8 +8,6 @@
 
 namespace Aligent\AsyncEventsBundle\Provider;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-
 class WebhookCustomEventsProvider implements WebhookCustomEventsProviderInterface
 {
     /**
