@@ -48,6 +48,7 @@ services:
       - '@aligent_webhook.config.cache'
     tags:
       - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Transport', event: postUpdate }
+      - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Transport', event: postRemove }
 
   Aligent\AsyncEventsBundle\Async\WebhookEntityProcessor:
     parent: Aligent\AsyncEventsBundle\Async\AbstractRetryableProcessor
