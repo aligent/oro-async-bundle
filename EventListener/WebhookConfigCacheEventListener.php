@@ -42,4 +42,15 @@ class WebhookConfigCacheEventListener
             $this->cache->deleteAll();
         }
     }
+
+    /**
+     * @param Transport $transport
+     * @param LifecycleEventArgs $args
+     */
+    public function postRemove(Transport $transport, LifecycleEventArgs $args)
+    {
+        if ($transport instanceof WebhookTransport) {
+            $this->cache->deleteAll();
+        }
+    }
 }

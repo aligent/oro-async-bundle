@@ -6,6 +6,7 @@ use Aligent\AsyncEventsBundle\Exception\RetryableException;
 use Aligent\AsyncEventsBundle\Entity\WebhookTransport as WebhookTransportEntity;
 use Aligent\AsyncEventsBundle\Integration\WebhookTransport;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
+use Doctrine\Common\Cache\CacheProvider;
 use GuzzleHttp\Exception\GuzzleException;
 use Oro\Bundle\ImportExportBundle\Serializer\SerializerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -35,6 +36,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     protected WebhookTransport $transport;
     protected SerializerInterface $serializer;
     protected WebhookConfigProvider $configProvider;
+    protected CacheProvider $cache;
 
     /**
      * @param SerializerInterface $serializer
@@ -70,6 +72,17 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     }
 
     /**
+     * @param CacheProvider $cache
+     * @return WebhookEntityProcessor
+     */
+    public function setCache(CacheProvider $cache): WebhookEntityProcessor
+    {
+        $this->cache = $cache;
+
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function execute(MessageInterface $message): string
@@ -80,7 +93,9 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
         $channel = $channelRepo->find($data['channelId']);
 
         if (!$channel) {
-            $this->logger->critical("Channel {$channel->getName()} no longer exists. Skipping webhook event.");
+            $this->logger->critical("Channel {$data['channelId']} no longer exists. Skipping webhook event.");
+            // remove channel from cache
+            $this->cache->deleteAll();
             return self::REJECT;
         }
 
