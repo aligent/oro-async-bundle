@@ -14,11 +14,11 @@ namespace Aligent\AsyncEventsBundle\Tests\Unit\Form\Type;
 
 use Aligent\AsyncEventsBundle\Entity\WebhookTransport;
 use Aligent\AsyncEventsBundle\Form\Type\WebhookTransportSettingsType;
+use Aligent\AsyncEventsBundle\Provider\WebhookCustomEventsProviderInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Persistence\ObjectManager;
-use Oro\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
 use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
@@ -27,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WebhookTransportSettingsTypeTest extends TestCase
 {
@@ -55,7 +56,10 @@ class WebhookTransportSettingsTypeTest extends TestCase
             ->method('getAllMetadata')
             ->willReturn($metadata);
 
-        $this->type = new WebhookTransportSettingsType($doctrine);
+        $translator = $this->createMock(TranslatorInterface::class);
+        $customEventsProvider = $this->createMock(WebhookCustomEventsProviderInterface::class);
+
+        $this->type = new WebhookTransportSettingsType($doctrine, $translator, $customEventsProvider);
     }
 
     public function testBuildForm()
@@ -78,14 +82,16 @@ class WebhookTransportSettingsTypeTest extends TestCase
             ->method('add')
             ->will($this->returnSelf());
 
-        $counter = 0;
-        foreach ($expectedFields as $fieldName => $formType) {
-            $builder->expects($this->at($counter))
-                ->method('add')
-                ->with($fieldName, $formType)
-                ->will($this->returnSelf());
-            $counter++;
-        }
+        $builder->expects($this->exactly(count($expectedFields)))
+            ->method('add')
+            ->withConsecutive(
+                ...array_map(
+                    fn ($fieldName, $formType) => [$fieldName, $formType],
+                    array_keys($expectedFields),
+                    $expectedFields
+                )
+            )
+            ->will($this->returnSelf());
 
         $this->type->buildForm($builder, []);
     }

@@ -14,5 +14,4 @@ namespace Aligent\AsyncEventsBundle\Exception;
 
 class RetryableException extends \Exception
 {
-
 }

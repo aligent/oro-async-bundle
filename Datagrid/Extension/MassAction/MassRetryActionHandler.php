@@ -12,10 +12,10 @@
 
 namespace Aligent\AsyncEventsBundle\Datagrid\Extension\MassAction;
 
-use Aligent\AsyncEventsBundle\Entity\FailedJob;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerArgs;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class MassRetryActionHandler implements MassActionHandlerInterface
@@ -43,7 +43,7 @@ class MassRetryActionHandler implements MassActionHandlerInterface
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function handle(MassActionHandlerArgs $args)
+    public function handle(MassActionHandlerArgs $args): MassActionResponseInterface
     {
         $results = $args->getResults();
         $em = $results->getSource()->getEntityManager();

@@ -16,5 +16,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class AligentAsyncEventsBundle extends Bundle
 {
-
 }
