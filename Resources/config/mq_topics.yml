@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        tags:
+            - { name: oro_message_queue.topic }
+
+    Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCreateTopic: ~
+    Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCustomTopic: ~
+    Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityDeleteTopic: ~
+    Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityUpdateTopic: ~

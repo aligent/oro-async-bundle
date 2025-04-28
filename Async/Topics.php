@@ -2,6 +2,9 @@
 
 namespace Aligent\AsyncEventsBundle\Async;
 
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityCreateTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityDeleteTopic;
+use Aligent\AsyncEventsBundle\Async\Topic\WebhookEntityUpdateTopic;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
 
 /**
@@ -15,14 +18,9 @@ use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
  */
 class Topics
 {
-    const WEBHOOK_ENTITY_CREATE = 'aligent.webhook.entity.create';
-    const WEBHOOK_ENTITY_UPDATE = 'aligent.webhook.entity.update';
-    const WEBHOOK_ENTITY_DELETE = 'aligent.webhook.entity.delete';
-    const WEBHOOK_ENTITY_CUSTOM = 'aligent.webhook.entity.custom';
-
     const EVENT_MAP = [
-        WebhookConfigProvider::UPDATE => self::WEBHOOK_ENTITY_UPDATE,
-        WebhookConfigProvider::DELETE => self::WEBHOOK_ENTITY_DELETE,
-        WebhookConfigProvider::CREATE => self::WEBHOOK_ENTITY_CREATE,
+        WebhookConfigProvider::UPDATE => WebhookEntityUpdateTopic::NAME,
+        WebhookConfigProvider::DELETE => WebhookEntityDeleteTopic::NAME,
+        WebhookConfigProvider::CREATE => WebhookEntityCreateTopic::NAME,
     ];
 }

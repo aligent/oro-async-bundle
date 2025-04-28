@@ -2,19 +2,28 @@
 
 namespace Aligent\AsyncEventsBundle\Async\Topic;
 
-class WebhookEntityCustomTopic extends \Oro\Component\MessageQueue\Topic\AbstractTopic
+use Oro\Component\MessageQueue\Topic\AbstractTopic;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class WebhookEntityCustomTopic extends AbstractTopic
 {
+    public const string NAME = 'aligent.webhook.entity.custom';
+
     public static function getName(): string
     {
-        return 'aligent.webhook.entity.custom';
+        return self::NAME;
     }
+
     public static function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
-        return '';
+        return 'Send entity custom events via webhooks';
     }
-    public function configureMessageBody(\Symfony\Component\OptionsResolver\OptionsResolver $resolver): void
+
+    public function configureMessageBody(OptionsResolver $resolver): void
     {
-        // TODO: Implement configureMessageBody() method.
+        $resolver->setRequired(['class', 'id', 'channelId'])
+            ->setAllowedTypes('class', 'string')
+            ->setAllowedTypes('id', 'array')
+            ->setAllowedTypes('channelId', 'int[]');
     }
 }
