@@ -6,6 +6,7 @@ use Aligent\AsyncEventsBundle\Entity\WebhookTransport;
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class WebhookConfigCacheEventListener
@@ -19,15 +20,15 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 class WebhookConfigCacheEventListener
 {
     /**
-     * @var CacheProvider
+     * @var CacheInterface
      */
     protected $cache;
 
     /**
      * WebhookConfigCacheEventListener constructor.
-     * @param CacheProvider $cache
+     * @param CacheInterface $cache
      */
-    public function __construct(CacheProvider $cache)
+    public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
     }

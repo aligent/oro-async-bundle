@@ -8,12 +8,14 @@ use Aligent\AsyncEventsBundle\Integration\WebhookTransport;
 use Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider;
 use Doctrine\Common\Cache\CacheProvider;
 use GuzzleHttp\Exception\GuzzleException;
+use Oro\Bundle\EntityExtendBundle\EntityReflectionClass;
 use Oro\Bundle\ImportExportBundle\Serializer\SerializerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Component\MessageQueue\Client\Config;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class WebhookEntityHandler
@@ -36,7 +38,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     protected WebhookTransport $transport;
     protected SerializerInterface $serializer;
     protected WebhookConfigProvider $configProvider;
-    protected CacheProvider $cache;
+    protected CacheInterface $cache;
 
     /**
      * @param SerializerInterface $serializer
@@ -72,10 +74,10 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     }
 
     /**
-     * @param CacheProvider $cache
+     * @param CacheInterface $cache
      * @return WebhookEntityProcessor
      */
-    public function setCache(CacheProvider $cache): WebhookEntityProcessor
+    public function setCache(CacheInterface $cache): WebhookEntityProcessor
     {
         $this->cache = $cache;
 
@@ -124,7 +126,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             $this->logger->error(
                 $message,
                 [
-                    
+
                     'channelId' => $channel->getId(),
                     'channel' => $channel->getName(),
                     'topic' => $topic,
@@ -170,7 +172,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
             }
         }
 
-        $reflClass = new \ReflectionClass($data['class']);
+        $reflClass = new EntityReflectionClass($data['class']);
 
         return [
             'type' => $reflClass->getShortName(),

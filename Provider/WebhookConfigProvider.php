@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class WebhookConfigProvider
@@ -26,15 +27,15 @@ class WebhookConfigProvider
     // Cache Keys
     const CONFIG_CACHE_KEY = 'WebhookConfig';
 
-    protected CacheProvider $cache;
+    protected CacheInterface $cache;
     protected ManagerRegistry $registry;
 
     /**
      * WebhookEntityProvider constructor.
      * @param ManagerRegistry $registry
-     * @param CacheProvider $cache
+     * @param CacheInterface $cache
      */
-    public function __construct(ManagerRegistry $registry, CacheProvider $cache)
+    public function __construct(ManagerRegistry $registry, CacheInterface $cache)
     {
         $this->registry = $registry;
         $this->cache = $cache;

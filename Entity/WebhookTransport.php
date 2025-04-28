@@ -12,59 +12,58 @@
 
 namespace Aligent\AsyncEventsBundle\Entity;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class WebhookTransport
- *
- * @ORM\Entity
- * @Config()
  */
+#[ORM\Entity]
+#[Config]
 class WebhookTransport extends Transport
 {
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_api_user", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_api_user', nullable: true)]
     protected $username;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_api_key", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_api_key', nullable: true)]
     protected $password;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_api_url", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_api_url', nullable: true)]
     protected $url;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_entity_class", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_entity_class', nullable: true)]
     protected $entity;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_event", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_event', nullable: true)]
     protected $event;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="wh_method", nullable=true)
      */
+    #[ORM\Column(type: 'string', name: 'wh_method', nullable: true)]
     protected $method;
 
     /**
      * @var array
-     * @ORM\Column(type="json", name="wh_headers", nullable=true)
      */
+    #[ORM\Column(type: 'json', name: 'wh_headers', nullable: true)]
     protected $headers = [];
 
     /**

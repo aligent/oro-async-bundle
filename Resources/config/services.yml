@@ -22,9 +22,11 @@ services:
   # Caches
   aligent_webhook.config.cache:
     public: false
-    parent: oro.cache.abstract
-    calls:
-      - [setNamespace, ['aligent_webhook']]
+    parent: oro.data.cache
+    tags:
+      -
+        name: cache.pool
+        namespace: aligent_webhook
 
   # Providers
   Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider:
