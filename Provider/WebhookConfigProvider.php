@@ -2,7 +2,6 @@
 
 namespace Aligent\AsyncEventsBundle\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -47,7 +46,9 @@ class WebhookConfigProvider
      */
     protected function getWebhookConfig(): array
     {
-        if ($webhookConfig = $this->cache->fetch(self::CONFIG_CACHE_KEY)) {
+        $webhookConfigItem = $this->cache->getItem(self::CONFIG_CACHE_KEY);
+        $webhookConfig = $webhookConfigItem->get();
+        if ($webhookConfig !== null) {
             return $webhookConfig;
         }
 
@@ -66,7 +67,9 @@ class WebhookConfigProvider
         }
 
         $config = $this->normalizeConfig($config);
-        $this->cache->save(static::CONFIG_CACHE_KEY, $config);
+        $webhookConfigItem->set($config);
+        $this->cache->save($webhookConfigItem);
+
         return $config;
     }
 
