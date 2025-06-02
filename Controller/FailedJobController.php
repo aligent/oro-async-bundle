@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,9 +39,7 @@ class FailedJobController extends AbstractController
         $this->doctrine = $managerRegistry;
     }
 
-    /**
-     * @Route(name="aligent_failed_jobs_index")
-     */
+    #[Route(path: '/', name: 'aligent_failed_jobs_index')]
     #[Acl(id: 'failed_jobs', type: 'action', label: 'RetryableJobs')]
     #[Template]
     public function indexAction()
@@ -52,10 +50,10 @@ class FailedJobController extends AbstractController
     /**
      * View Failed Job
      *
-     * @Route("/view/{id}", name="aligent_failed_jobs_view")
      * @param FailedJob $job
      * @return array
      */
+    #[Route(path: '/view/{id}', name: 'aligent_failed_jobs_view', requirements: ['id' => '\d+'])]
     #[AclAncestor('failed_jobs')]
     #[Template]
     public function viewAction(FailedJob $job)
@@ -68,10 +66,10 @@ class FailedJobController extends AbstractController
     /**
      * Delete Failed Job
      *
-     * @Route("/remove/{id}", name="aligent_failed_jobs_delete")
      * @param FailedJob $job
      * @return JsonResponse
      */
+    #[Route(path: '/remove/{id}', name: 'aligent_failed_jobs_delete', requirements: ['id' => '\d+'])]
     #[AclAncestor('failed_jobs')]
     public function deleteAction(FailedJob $job)
     {
@@ -89,10 +87,10 @@ class FailedJobController extends AbstractController
     /**
      * Retry Failed jobs
      *
-     * @Route("/retry/{id}", name="aligent_failed_jobs_retry")
      * @param FailedJob $job
      * @return JsonResponse
      */
+    #[Route(path: '/retry/{id}', name: 'aligent_failed_jobs_retry', requirements: ['id' => '\d+'])]
     #[AclAncestor('failed_jobs')]
     public function retryAction(FailedJob $job)
     {
