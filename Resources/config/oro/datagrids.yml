@@ -9,7 +9,7 @@ datagrids:
           - job.id
           - job.createdAt
         from:
-          - { table: AligentAsyncEventsBundle:FailedJob, alias: job }
+            - { table: 'Aligent\AsyncEventsBundle\Entity\FailedJob', alias: job }
     columns:
       topic:
         label: aligent.async.failedjob.topic.label
