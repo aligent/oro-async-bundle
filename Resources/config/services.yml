@@ -24,9 +24,7 @@ services:
     public: false
     parent: oro.data.cache
     tags:
-      -
-        name: cache.pool
-        namespace: aligent_webhook
+      - { name: 'cache.pool', namespace: 'aligent_webhook' }
 
   # Providers
   Aligent\AsyncEventsBundle\Provider\WebhookConfigProvider:

@@ -6,7 +6,7 @@ use Aligent\AsyncEventsBundle\Entity\WebhookTransport;
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
-use Symfony\Contracts\Cache\CacheInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Class WebhookConfigCacheEventListener
@@ -19,16 +19,9 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class WebhookConfigCacheEventListener
 {
-    /**
-     * @var CacheInterface
-     */
-    protected $cache;
+    protected CacheItemPoolInterface $cache;
 
-    /**
-     * WebhookConfigCacheEventListener constructor.
-     * @param CacheInterface $cache
-     */
-    public function __construct(CacheInterface $cache)
+    public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
     }
@@ -40,7 +33,7 @@ class WebhookConfigCacheEventListener
     public function postUpdate(Transport $transport, LifecycleEventArgs $args)
     {
         if ($transport instanceof WebhookTransport) {
-            $this->cache->deleteAll();
+            $this->cache->clear();
         }
     }
 
@@ -51,7 +44,7 @@ class WebhookConfigCacheEventListener
     public function postRemove(Transport $transport, LifecycleEventArgs $args)
     {
         if ($transport instanceof WebhookTransport) {
-            $this->cache->deleteAll();
+            $this->cache->clear();
         }
     }
 }

@@ -19,7 +19,7 @@ use Oro\Component\MessageQueue\Client\Config;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
-use Symfony\Contracts\Cache\CacheInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Class WebhookEntityHandler
@@ -42,7 +42,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     protected WebhookTransport $transport;
     protected SerializerInterface $serializer;
     protected WebhookConfigProvider $configProvider;
-    protected CacheInterface $cache;
+    protected CacheItemPoolInterface $cache;
 
     /**
      * @param SerializerInterface $serializer
@@ -78,10 +78,10 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
     }
 
     /**
-     * @param CacheInterface $cache
+     * @param CacheItemPoolInterface $cache
      * @return WebhookEntityProcessor
      */
-    public function setCache(CacheInterface $cache): WebhookEntityProcessor
+    public function setCache(CacheItemPoolInterface $cache): WebhookEntityProcessor
     {
         $this->cache = $cache;
 
@@ -101,7 +101,7 @@ class WebhookEntityProcessor extends AbstractRetryableProcessor implements Topic
         if (!$channel) {
             $this->logger->critical("Channel {$data['channelId']} no longer exists. Skipping webhook event.");
             // remove channel from cache
-            $this->cache->deleteAll();
+            $this->cache->clear();
             return self::REJECT;
         }
 

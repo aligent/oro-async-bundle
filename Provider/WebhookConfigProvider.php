@@ -5,7 +5,7 @@ namespace Aligent\AsyncEventsBundle\Provider;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Contracts\Cache\CacheInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Class WebhookConfigProvider
@@ -26,15 +26,10 @@ class WebhookConfigProvider
     // Cache Keys
     const CONFIG_CACHE_KEY = 'WebhookConfig';
 
-    protected CacheInterface $cache;
+    protected CacheItemPoolInterface $cache;
     protected ManagerRegistry $registry;
 
-    /**
-     * WebhookEntityProvider constructor.
-     * @param ManagerRegistry $registry
-     * @param CacheInterface $cache
-     */
-    public function __construct(ManagerRegistry $registry, CacheInterface $cache)
+    public function __construct(ManagerRegistry $registry, CacheItemPoolInterface $cache)
     {
         $this->registry = $registry;
         $this->cache = $cache;
