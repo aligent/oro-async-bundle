@@ -29,6 +29,6 @@ abstract class WebhookEntityGenericTopic extends AbstractTopic
         $resolver->setRequired(['changeSet', 'class', 'id', 'channelId'])
             ->setAllowedTypes('class', 'string')
             ->setAllowedTypes('id', 'array')
-            ->setAllowedTypes('channelId', 'int[]');
+            ->setAllowedTypes('channelId', 'int');
     }
 }
